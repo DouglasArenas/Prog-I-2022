@@ -1,0 +1,9 @@
+ahora se maneja con un foro
+
+requisitos:
+admin, users, invitado(invitados pueden ver los comentarios? PREGUNTAR!)
+filtros de busqueda; por calificacion
+poetas; requiere una aprobacion por el admin, debe calificar cierta cantidad para poder subir un poema, deben tener una cuenta activa.
+Puede ; calificar(), comentar
+anonimatos; debe poder mostrar al menos el alias,
+admin; borrar usuario, poemas y calificacion, aprobar/desaprobar poeta
