@@ -136,3 +136,4 @@ dmypy.json
 /share
 pyvenv.cfg
 .env
+requisitos.txt
