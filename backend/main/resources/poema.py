@@ -18,7 +18,8 @@ class Poem(Resource):
 
     def delete(self, id):
         if int(id) in POEMS:
-            return POEMS[int(id)]
+            del POEMS[int(id)]
+            return '', 204
         return '', 404
 
 class Poems(Resource):

@@ -7,7 +7,7 @@ CALIFICACIONES = {
     3 : {'calification' : 2}
 }
 
-class Calification(Resource):
+class Qualification(Resource):
     def get(self, id):
         if int(id) in CALIFICACIONES:
             return CALIFICACIONES[int(id)]
@@ -15,15 +15,16 @@ class Calification(Resource):
 
     def delete(self, id):
         if int(id) in CALIFICACIONES:
-            return CALIFICACIONES[int(id)]
+            del CALIFICACIONES[int(id)]
+            return '', 204
         return '', 404
 
-class Califications(Resource):
+class Qualifications(Resource):
     def get(self):
         return CALIFICACIONES
 
     def post(self):
-        calification = request.get_json()
+        qualification = request.get_json()
         id = int(max(CALIFICACIONES.key())) + 1
-        CALIFICACIONES[id] = calification
+        CALIFICACIONES[id] = qualification
         return CALIFICACIONES[id], 201

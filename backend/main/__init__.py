@@ -13,8 +13,8 @@ def create_app():
     load_dotenv()
     #
     #Aquí se inicializarán el resto de los módulos de la aplicación
-    api.add_resource(resources.CalificationResource, '/calificacion/<id>')
-    api.add_resource(resources.CalificationsResource, '/calificacions')
+    api.add_resource(resources.QualificationResource, '/calificacion/<id>')
+    api.add_resource(resources.QualificationsResource, '/calificaciones')
     api.add_resource(resources.PoemResource, '/poema/<id>')
     api.add_resource(resources.PoemsResource, '/poemas')
     api.add_resource(resources.UserResource, '/usuario/<id>')
@@ -22,5 +22,6 @@ def create_app():
 
     #
     #Retornar aplicación inicializada
+    api.init_app(app)
     return app
 

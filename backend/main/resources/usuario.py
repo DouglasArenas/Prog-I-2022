@@ -17,7 +17,8 @@ class User(Resource):
 
     def delete(self, id):
         if int(id) in USUARIOS:
-            return USUARIOS[int(id)]
+            del USUARIOS[int(id)]
+            return '', 204
         return '', 404
 
 class Users(Resource):
