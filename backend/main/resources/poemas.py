@@ -1,5 +1,14 @@
 from flask_restful import Resource
-from flas import request
+from flask import request
+
+#Diccionario de prueba
+POEMS = {
+    1 : {'Título' : 'Elegía' ,'Autor' : 'Miguel'},
+    2 : {'Título' : 'Tú me quieres blanca' ,'Autor' : 'Alfonsina'},
+    3 : {'Título' : 'Gacela de la terrible presencia' ,'Autor' : 'Federico'},
+    4 : {'Título' : 'Me gusta cuando callas' ,'Autor' : 'Pablo'},
+    5 : {'Título' : 'Amor constante más allá de la muerte' ,'Autor' : 'Francisco'}
+}
 
 class Poem(Resource):
     def get(self, id):
