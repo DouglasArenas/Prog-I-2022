@@ -15,6 +15,14 @@ class User(Resource):
             return USUARIOS[int(id)]
         return '', 404
 
+    def put(self, id):
+        if int(id) in USUARIOS:
+            user = USUARIOS[int(id)]
+            data = request.get_json()
+            user.update(data)
+            return user, 201
+        return '', 404
+
     def delete(self, id):
         if int(id) in USUARIOS:
             del USUARIOS[int(id)]
@@ -27,6 +35,6 @@ class Users(Resource):
 
     def post(self):
         user = request.get_json()
-        id = int(max(USUARIOS.key())) + 1
+        id = int(max(USUARIOS.keys())) + 1
         USUARIOS[id] = user
         return USUARIOS[id], 201

@@ -3,11 +3,11 @@ from flask import request
 
 #Diccionario de prueba
 POEMS = {
-    1 : {'Título' : 'Elegía' ,'Autor' : 'Miguel'},
-    2 : {'Título' : 'Tú me quieres blanca' ,'Autor' : 'Alfonsina'},
-    3 : {'Título' : 'Gacela de la terrible presencia' ,'Autor' : 'Federico'},
-    4 : {'Título' : 'Me gusta cuando callas' ,'Autor' : 'Pablo'},
-    5 : {'Título' : 'Amor constante más allá de la muerte' ,'Autor' : 'Francisco'}
+    1 : {'title' : 'Elegía' ,'author' : 'Miguel'},
+    2 : {'title' : 'Tú me quieres blanca' ,'author' : 'Alfonsina'},
+    3 : {'title' : 'Gacela de la terrible presencia' ,'author' : 'Federico'},
+    4 : {'title' : 'Me gusta cuando callas' ,'author' : 'Pablo'},
+    5 : {'title' : 'Amor constante más allá de la muerte' ,'author' : 'Francisco'}
 }
 
 class Poem(Resource):
@@ -28,6 +28,6 @@ class Poems(Resource):
 
     def post(self):
         poem = request.get_json()
-        id = int(max(POEMS.key())) + 1
+        id = int(max(POEMS.keys())) + 1
         POEMS[id] = poem
         return POEMS[id], 201

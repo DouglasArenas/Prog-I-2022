@@ -2,9 +2,9 @@ from flask_restful import Resource
 from flask import request
 
 CALIFICACIONES = {
-    1 : {'calification' : 5},
-    2 : {'calification' : 4},
-    3 : {'calification' : 2}
+    1 : {'qualification' : 5},
+    2 : {'qualification' : 4},
+    3 : {'qualification' : 2}
 }
 
 class Qualification(Resource):
@@ -25,6 +25,6 @@ class Qualifications(Resource):
 
     def post(self):
         qualification = request.get_json()
-        id = int(max(CALIFICACIONES.key())) + 1
+        id = int(max(CALIFICACIONES.keys())) + 1
         CALIFICACIONES[id] = qualification
         return CALIFICACIONES[id], 201
