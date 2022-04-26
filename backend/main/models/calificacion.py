@@ -1,24 +1,28 @@
 from .. import db
-from . import UserModel
 
 class Qualification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer, nullable=False)
     comment = db.Column(db.Integer, nullable=True)
-    userId = db.Column(db.Integer, db.ForeingKey('user.id'), nullable=False)
-    poemId = db.Column(db.Integer, db.ForeingKey('poem.id'), nullnable=False)
-    author = db.relationship('User', back_populates="qualification", uselist=False, single_parents=True)
+    userId = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    poemId = db.Column(db.Integer, db.ForeignKey('poem.id'), nullable=False)
+    author = db.relationship('User', back_populates="qualification", uselist=False, single_parent=True)
+    poem = db.relationship('Poem', back_populates="qualification", uselist=False, single_parent=True)
 
     def __repr__(self):
         return f'<Score: {self.score}, Comment: {self.comment}, User: {self.userId}, Poem {self.poemId}>'
 
     def to_json(self):
-        self.author = db.session.query(UserModel).get_or_404(self.userId)
+        poem = [poem.to_json() for poem in self.poem]
+        user = [user.to_json() for user in self.user]
         qualification_json = {
-            'id' : self.id,
-            'score' : self.score,
-            'comment' : self.comment,
-            'author' : self.author.to_json()
+            'id': self.id,
+            'name': (self.name),
+            'password': (self.password),
+            'role': (self.role),
+            'email': (self.email),
+            'poem' : poem,
+            'user' : user
         }
         return qualification_json
 
@@ -34,6 +38,5 @@ class Qualification(db.Model):
         id = qualification_json.get('id')
         score = qualification_json.get('score')
         comment = qualification_json.get('comment')
-        userId = qualification_json.get('userId')
         poemId = qualification_json.get('poemId')
-        return Qualification(id=id, score=score, comment=comment, userId=userId, poemId=poemId)
+        return Qualification(id=id, score=score, comment=comment, poemId=poemId)
