@@ -7,34 +7,36 @@ class User(db.Model):
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     role = db.Column(db.String(100), nullable=False)
-    qualification = db.relationship('Qualification', back_populates="author", cascade="all, delete-orphan")
-    poem = db.relationship('Poem', back_populates="author", cascade="all, delete-orphan")
+    # Relaciones
+    qualifications = db.relationship('Qualification', back_populates="author", cascade="all, delete-orphan")
+    poems = db.relationship('Poem', back_populates="author", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Name: {self.name}, email : {self.email}, role: {self.role}>'
-
+    # Objeto a JSON
     def to_json(self):
-        qualification = [qualification.to_json() for qualification in self.qualification]
-        poem = [poem.to_json() for poem in self.poem]
-        poem_json = {
+        qualifications = [qualification.to_json() for qualification in self.qualifications]
+        poems = [poem.to_json() for poem in self.poems]
+        user_json = {
             'id' : self.id,
             'name' : self.name,
             'email' : self.email,
             'password' : self.password,
             'role' : self.role,
-            'qualification' : qualification,
-            'poem' : poem
+            'qualifications' : qualifications,
+            'poems' : poems
         }
-        return poem_json
+        return user_json
 
     def to_json_short(self):
-        poem_json = {
+        user_json = {
             'id' : self.id,
             'name' : self.name,
         }
-        return poem_json
+        return user_json
 
     @staticmethod
+    # JSON a objeto
     def from_json(user_json):
         id = user_json.get('id')
         name = user_json.get('name')

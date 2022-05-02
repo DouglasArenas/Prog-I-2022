@@ -1,14 +1,14 @@
 from .. import db
-import datetime
 
 class Poem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     body = db.Column(db.String(1000), nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
+    date_time = db.Column(db.DateTime, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    # Relaciones
     author = db.relationship('User', back_populates="poem", uselist=False, single_parent=True)
-    qualification = db.relationship('Qualification', back_populates="poem", cascade="all, delete-orphan")
+    qualifications = db.relationship('Qualification', back_populates="poem", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Title: {self.title}, User Id: {self.user_id}, Poem: {self.body}, Date {self.date}>'
@@ -29,4 +29,4 @@ class Poem(db.Model):
         title = poem_json.get('title')
         user_id = poem_json.get('user_id')
         body = poem_json.get('body')
-        return Poem(id=id, title=title, user_id=user_id,body=body)
+        return Poem(id=id, title=title, user_id=user_id, body=body)

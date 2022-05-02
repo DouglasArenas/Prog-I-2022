@@ -4,17 +4,18 @@ class Qualification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer, nullable=False)
     comment = db.Column(db.Integer, nullable=True)
-    userId = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    poemId = db.Column(db.Integer, db.ForeignKey('poem.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    poem_id = db.Column(db.Integer, db.ForeignKey('poem.id'), nullable=False)
+    # Relaciones
     author = db.relationship('User', back_populates="qualification", uselist=False, single_parent=True)
-    poem = db.relationship('Poem', back_populates="qualification", uselist=False, single_parent=True)
+    poem = db.relationship('Poem', back_populates="qualifications", uselist=False, single_parent=True)
 
     def __repr__(self):
-        return f'<Score: {self.score}, Comment: {self.comment}, User: {self.userId}, Poem {self.poemId}>'
-
+        return f'<Score: {self.score}, Comment: {self.comment}, User: {self.user_id}, Poem {self.poem_id}>'
+    # Objeto a JSON
     def to_json(self):
-        poem = [poem.to_json() for poem in self.poem]
-        user = [user.to_json() for user in self.user]
+        poem = poem.to_json()
+        user = [users.to_json() for users in self.user]
         qualification_json = {
             'id': self.id,
             'name': (self.name),
@@ -34,9 +35,11 @@ class Qualification(db.Model):
         return qualification_json
 
     @staticmethod
+    # JSON a objeto
     def from_json(qualification_json):
         id = qualification_json.get('id')
         score = qualification_json.get('score')
         comment = qualification_json.get('comment')
-        poemId = qualification_json.get('poemId')
-        return Qualification(id=id, score=score, comment=comment, poemId=poemId)
+        poem_id = qualification_json.get('poem_id')
+        user_id = qualification_json.get('user_id')
+        return Qualification(id=id, score=score, comment=comment, poem_id=poem_id, user_id=user_id)

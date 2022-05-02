@@ -1,3 +1,3 @@
-from .poema import Poem as PoemModel
-from .calificacion import Qualification as QualificationModel
-from .usuario import User as UserModel
+from .poem import Poem as PoemModel
+from .qualification import Qualification as QualificationModel
+from .user import User as UserModel

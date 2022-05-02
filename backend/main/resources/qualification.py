@@ -13,10 +13,11 @@ class Qualification(Resource):
         db.session.delete(qualification)
         db.session.commit()
         return '', 204
+
 class Qualifications(Resource):
     def get(self):
-        qualification = db.session.query(QualificationModel).all()
-        return jsonify([qualification.to_json_short() for qualification in qualification])
+        qualifications = db.session.query(QualificationModel).all()
+        return jsonify([qualification.to_json_short() for qualification in qualifications])
 
     def post(self):
         qualification = QualificationModel.from_json(request.get_json())
