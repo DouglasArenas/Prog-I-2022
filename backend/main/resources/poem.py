@@ -43,7 +43,7 @@ class Poems(Resource):
                 if key == "user_id":
                     poems = poems.filter(PoemModel.user_id == value)
                 if key == "user_name":
-                    poems = poems.user_name(PoemModel.user.has(UserModel.user_name.like('%'+value+'%')))
+                    poems = poems.user_name(PoemModel.author.has(UserModel.name.like('%'+value+'%')))
                 if key == "created[gt]":
                     poems = poems.filter(PoemModel.date_time >= datetime.strptime(value, '%d-%m-%Y'))
                 if key == "created[lt]":
@@ -55,9 +55,9 @@ class Poems(Resource):
                     if value == "author[desc]":
                         poems = poems.order_by(PoemModel.author.desc())
                     if value == "date":
-                        poems == poems.order_by(PoemModel.date)
+                        poems == poems.order_by(PoemModel.date_time)
                     if value == "date[desc]":
-                        poems = poems.order_by(PoemModel.date.desc())
+                        poems = poems.order_by(PoemModel.date_time.desc())
                     if value == "qualification":
                         poems = poems.outerjoin(PoemModel.qualifications).group_by(PoemModel.id).order_by(func.mean(QualificationModel.score))
                     if value == "qualification[desc]":

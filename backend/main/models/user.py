@@ -1,4 +1,3 @@
-from unicodedata import name
 from .. import db
 
 class User(db.Model):
@@ -16,7 +15,7 @@ class User(db.Model):
     # Objeto a JSON
     def to_json(self):
         poems = [poem.to_json() for poem in self.poems]
-        qualifications = [qualification.to_json() for qualification in self.qualifications]
+        qualifications = [qualification.to_json_short() for qualification in self.qualifications]
         user_json = {
             'id' : self.id,
             'name' : self.name,

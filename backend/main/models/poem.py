@@ -1,18 +1,18 @@
 from .. import db
-import statistics
+import statistics, datetime as dt
 
 class Poem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     body = db.Column(db.String(1000), nullable=False)
-    date_time = db.Column(db.DateTime, nullable=False)
+    date_time = db.Column(db.DateTime, nullable=False, default=dt.datetime.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     # Relaciones
-    author = db.relationship('User', back_populates="poem", uselist=False, single_parent=True)
+    author = db.relationship('User', back_populates="poems", uselist=False, single_parent=True)
     qualifications = db.relationship('Qualification', back_populates="poem", cascade="all, delete-orphan")
 
     def __repr__(self):
-        return f'<Title: {self.title}, User Id: {self.user_id}, Poem: {self.body}, Date {self.date}>'
+        return f'<Title: {self.title}, Poem: {self.body}, User Id: {self.user_id}, Date {self.date_time}>'
 
     def score_mean(self):
         qualification_list = []
@@ -29,11 +29,11 @@ class Poem(db.Model):
     def to_json(self):
         poem_json = {
             'id' : self.id,
-            'title' : self.title,
-            'body' : self.body,
-            'author' : self.author,
-            'date' : str(self.date.strftime("%d-%m-%Y")),
-            'qualifications' : [qualification.to_json() for qualification in self.qualifications],
+            'title' : str(self.title),
+            'body' : str(self.body),
+            'author' : self.author.to_json(),
+            'date' : str(self.date_time.strftime("%d-%m-%Y")),
+            'qualifications' : [qualification.to_json_short() for qualification in self.qualifications],
             'score_mean' : self.score_mean()
         }
         return poem_json
@@ -43,7 +43,6 @@ class Poem(db.Model):
             'id' : self.id,
             'title' : self.title,
             'body' : self.body,
-            'author' : self.author
         }
         return poem_json
 

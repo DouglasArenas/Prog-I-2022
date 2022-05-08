@@ -6,10 +6,10 @@ from main.models import QualificationModel
 class Qualification(Resource):
     def get(self, id):
         qualification = db.session.query(QualificationModel).get_or_404(id)
-        return qualification.to_json()
+        return qualification.to_json_short()
 
     def delete(self, id):
-        qualification = db.session.query(QualificationModel).get_orget_or_404(id)
+        qualification = db.session.query(QualificationModel).get_or_404(id)
         db.session.delete(qualification)
         db.session.commit()
         return '', 204
@@ -23,4 +23,4 @@ class Qualifications(Resource):
         qualification = QualificationModel.from_json(request.get_json())
         db.session.add(qualification)
         db.session.commit()
-        return qualification.to_json(), 201
+        return qualification.to_json_short(), 201
