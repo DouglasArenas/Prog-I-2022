@@ -18,10 +18,10 @@ class Qualification(db.Model):
         user = [users.to_json() for users in self.user]
         qualification_json = {
             'id': self.id,
-            'name': (self.name),
-            'password': (self.password),
-            'role': (self.role),
-            'email': (self.email),
+            'name': str(self.name),
+            'password': str(self.password),
+            'role': str(self.role),
+            'email': str(self.email),
             'poem' : poem,
             'user' : user
         }
@@ -30,7 +30,9 @@ class Qualification(db.Model):
     def to_json_short(self):
         qualification_json = {
             'id' : self.id,
-            'score' : self.score
+            'score' : self.score,
+            'user_id' : self.user_id,
+            'poem_id' : self.poem_id
         }
         return qualification_json
 

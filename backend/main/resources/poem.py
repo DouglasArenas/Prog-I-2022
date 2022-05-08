@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask import request, jsonify
 from .. import db
-from main.models import PoemModel, UserModel
+from main.models import PoemModel, UserModel, QualificationModel
 import datetime
 from sqlalchemy import func
 
@@ -43,7 +43,7 @@ class Poems(Resource):
                 if key == "user_id":
                     poems = poems.filter(PoemModel.user_id == value)
                 if key == "user_name":
-                    poems = poems.filter(PoemModel.user_name.has(UserModel.user_name.like('%'+value+'%')))
+                    poems = poems.user_name(PoemModel.user.has(UserModel.user_name.like('%'+value+'%')))
                 if key == "created[gt]":
                     poems = poems.filter(PoemModel.date_time >= datetime.strptime(value, '%d-%m-%Y'))
                 if key == "created[lt]":
@@ -59,10 +59,10 @@ class Poems(Resource):
                     if value == "date[desc]":
                         poems = poems.order_by(PoemModel.date.desc())
                     if value == "qualification":
-                        poems = poems.outerjoin(PoemModel.qualifications).group_by(PoemModel.id).order_by(func.avg(PoemModel.score))
+                        poems = poems.outerjoin(PoemModel.qualifications).group_by(PoemModel.id).order_by(func.mean(QualificationModel.score))
                     if value == "qualification[desc]":
-                        poems = poems.outerjoin(PoemModel.qualifications).group_by(PoemModel.id).order_by(func.avg(PoemModel.score).desc())
-        poems = poems.paginate(page, per_page, False, 30)
+                        poems = poems.outerjoin(PoemModel.qualifications).group_by(PoemModel.id).order_by(func.mean(QualificationModel.score).desc())
+        poems = poems.paginate(page, per_page, True, 30)
         return jsonify({
             "poems" : [poem.to_json_short() for poem in poems.items],
             "total" : poems.total,

@@ -15,16 +15,16 @@ class User(db.Model):
         return f'<Name: {self.name}, email : {self.email}, role: {self.role}>'
     # Objeto a JSON
     def to_json(self):
-        qualifications = [qualification.to_json() for qualification in self.qualifications]
         poems = [poem.to_json() for poem in self.poems]
+        qualifications = [qualification.to_json() for qualification in self.qualifications]
         user_json = {
             'id' : self.id,
             'name' : self.name,
             'email' : self.email,
             'password' : self.password,
             'role' : self.role,
+            'poems' : poems,
             'qualifications' : qualifications,
-            'poems' : poems
         }
         return user_json
 
