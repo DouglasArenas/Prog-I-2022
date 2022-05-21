@@ -20,7 +20,7 @@ class Poem(db.Model):
             mean = 0
         else:
             for qualification in self.qualifications:
-                puntaje = qualification.puntaje
+                puntaje = qualification.score
                 qualification_list.append(puntaje)
             mean = statistics.mean(qualification_list)
 
@@ -31,7 +31,7 @@ class Poem(db.Model):
             'id' : self.id,
             'title' : str(self.title),
             'body' : str(self.body),
-            'author' : self.author.to_json(),
+            'author' : self.author,
             'date' : str(self.date_time.strftime("%d-%m-%Y")),
             'qualifications' : [qualification.to_json_short() for qualification in self.qualifications],
             'score_mean' : self.score_mean()
