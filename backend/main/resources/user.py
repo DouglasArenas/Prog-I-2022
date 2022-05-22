@@ -7,7 +7,7 @@ from sqlalchemy import func
 class User(Resource):
     def get(self, id):
         user = db.session.query(UserModel).get_or_404(id)
-        return user.to_json()
+        return user.to_json_short()
 
     def put(self, id):
         user = db.session.query(UserModel).get_or_404(id)
@@ -16,7 +16,7 @@ class User(Resource):
             setattr(user, key, value)
         db.session.add(user)
         db.session.commit()
-        return user.to_json() , 201
+        return user.to_json_short() , 201
 
     def delete(self, id):
         user = db.session.query(UserModel).get_or_404(id)
@@ -51,7 +51,7 @@ class Users(Resource):
                         users = users.outerjoin(UserModel.qualifications).group_by(UserModel.id).order_by(func.count(UserModel.id).desc())
         users = users.paginate(page, per_page, True, 30)
         return jsonify({
-            'users' : [user.to_json_short() for user in users.items],
+            'users' : [user.to_json_short_short() for user in users.items],
             'total' : users.total,
             'pages' : users.pages,
             'page' : page
@@ -61,4 +61,4 @@ class Users(Resource):
         user = UserModel.from_json(request.get_json())
         db.session.add(user)
         db.session.commit()
-        return user.to_json(), 201
+        return user.to_json_short(), 201

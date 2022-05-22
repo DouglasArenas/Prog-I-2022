@@ -8,7 +8,7 @@ from sqlalchemy import func
 class Poem(Resource):
     def get(self, id):
         poem = db.session.query(PoemModel).get_or_404(id)
-        return poem.to_json()
+        return poem.to_json_short()
 
     def delete(self, id):
         poem = db.session.query(PoemModel).get_or_404(id)
