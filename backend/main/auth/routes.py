@@ -27,7 +27,7 @@ def login():
     else:
         return 'Incorrect password', 401
 
-#Método de registro
+"""Método de registro
 @auth.route('/register', methods=['POST'])
 def register():
     #Obtener user
@@ -45,3 +45,4 @@ def register():
             db.session.rollback()
             return str(error), 409
         return user.to_json() , 201
+"""

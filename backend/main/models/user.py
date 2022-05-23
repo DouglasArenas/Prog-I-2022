@@ -11,6 +11,20 @@ class User(db.Model):
     qualifications = db.relationship('Qualification', back_populates="author", cascade="all, delete-orphan")
     poems = db.relationship('Poem', back_populates="author", cascade="all, delete-orphan")
 
+    #Getter de la contraseña plana no permite leerla
+    @property
+    def plain_password(self):
+        raise AttributeError('Password cant be read')
+    #Setter de la contraseña toma un valor en texto plano
+    # calcula el hash y lo guarda en el atributo password
+    @plain_password.setter
+    def plain_password(self, password):
+        self.password = generate_password_hash(password)
+    #Método que compara una contraseña en texto plano con el hash guardado en la db
+    def validate_pass(self,password):
+        return check_password_hash(self.password, password)
+
+
     def __repr__(self):
         return f'<Name: {self.name}, email : {self.email}, role: {self.role}>'
     # Objeto a JSON
@@ -43,4 +57,4 @@ class User(db.Model):
         email = user_json.get('email')
         password = user_json.get('password')
         role = user_json.get('role')
-        return User(id=id, name=name, email=email, password=password, role=role)
+        return User(id=id, name=name, email=email, plain_password=password, role=role)
