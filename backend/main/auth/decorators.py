@@ -25,7 +25,7 @@ def poet_required(fn):
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt()
-        if claims['rol'] == "poet":
+        if claims['role'] == "poet":
             return fn(*args, **kwargs)
         else:
             return 'Only poets can access', 403
@@ -40,7 +40,7 @@ def admin_or_poet_required(fn):
         #Obtener claims de adentro del JWT
         claims = get_jwt()
         #Verificar que el rol sea admin o poeta
-        if claims['role'] =="admin" or claims['role'] == "poet":
+        if claims['role'] == "admin" or claims['role'] == "poet":
             #Ejecutar función
             return fn(*args, **kwargs)
         else:

@@ -48,4 +48,3 @@ def create_app():
     #Retornar aplicación inicializada
 
     return app
-

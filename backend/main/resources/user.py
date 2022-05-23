@@ -7,7 +7,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from main.auth.decorators import admin_or_poet_required, admin_required
 
 class User(Resource):
-    @jwt_required
+    @jwt_required()
     def get(self, id):
         user = db.session.query(UserModel).get_or_404(id)
         return user.to_json_short()
@@ -22,7 +22,7 @@ class User(Resource):
         db.session.commit()
         return user.to_json_short() , 201
     
-    @jwt_required
+    @admin_or_poet_required
     def delete(self, id):
         user = db.session.query(UserModel).get_or_404(id)
         db.session.delete(user)
@@ -30,7 +30,7 @@ class User(Resource):
         return '', 204
 
 class Users(Resource):
-    @jwt_required
+    @admin_required
     def get(self):
         page = 1
         per_page = 10
@@ -57,7 +57,7 @@ class Users(Resource):
                         users = users.outerjoin(UserModel.qualifications).group_by(UserModel.id).order_by(func.count(UserModel.id).desc())
         users = users.paginate(page, per_page, True, 30)
         return jsonify({
-            'users' : [user.to_json_short_short() for user in users.items],
+            'users' : [user.to_json_short() for user in users.items],
             'total' : users.total,
             'pages' : users.pages,
             'page' : page

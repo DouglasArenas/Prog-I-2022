@@ -46,3 +46,5 @@ class Qualification(db.Model):
         poem_id = qualification_json.get('poem_id')
         user_id = qualification_json.get('user_id')
         return Qualification(id=id, score=score, comment=comment, poem_id=poem_id, user_id=user_id)
+
+    

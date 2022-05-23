@@ -15,11 +15,13 @@ class User(db.Model):
     @property
     def plain_password(self):
         raise AttributeError('Password cant be read')
+
     #Setter de la contraseña toma un valor en texto plano
     # calcula el hash y lo guarda en el atributo password
     @plain_password.setter
     def plain_password(self, password):
         self.password = generate_password_hash(password)
+
     #Método que compara una contraseña en texto plano con el hash guardado en la db
     def validate_pass(self,password):
         return check_password_hash(self.password, password)
@@ -27,6 +29,7 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<Name: {self.name}, email : {self.email}, role: {self.role}>'
+
     # Objeto a JSON
     def to_json(self):
         poems = [poem.to_json() for poem in self.poems]
@@ -39,6 +42,8 @@ class User(db.Model):
             'role' : self.role,
             'poems' : poems,
             'qualifications' : qualifications,
+            'num_poems': len(self.poems),
+            'num_score': len(self.scores)
         }
         return user_json
 
@@ -46,6 +51,7 @@ class User(db.Model):
         user_json = {
             'id' : self.id,
             'name' : self.name,
+            'email' : self.email
         }
         return user_json
 
