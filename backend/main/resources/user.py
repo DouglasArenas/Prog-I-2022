@@ -3,16 +3,15 @@ from flask import request, jsonify
 from .. import db
 from main.models import UserModel, UserModel
 from sqlalchemy import func
-from flask_jwt_extended import jwt_required, get_jwt_identity
-from main.auth.decorators import admin_or_poet_required, admin_required
+from flask_jwt_extended import jwt_required
+from main.auth.decorators import admin_required
 
 class User(Resource):
-    @jwt_required()
     def get(self, id):
         user = db.session.query(UserModel).get_or_404(id)
         return user.to_json_short()
     
-    @admin_or_poet_required
+    @jwt_required()
     def put(self, id):
         user = db.session.query(UserModel).get_or_404(id)
         data = request.get_json().items()
@@ -22,7 +21,7 @@ class User(Resource):
         db.session.commit()
         return user.to_json_short() , 201
     
-    @admin_or_poet_required
+    @jwt_required()
     def delete(self, id):
         user = db.session.query(UserModel).get_or_404(id)
         db.session.delete(user)
@@ -30,7 +29,7 @@ class User(Resource):
         return '', 204
 
 class Users(Resource):
-    @admin_required
+    @jwt_required(optional=True)
     def get(self):
         page = 1
         per_page = 10

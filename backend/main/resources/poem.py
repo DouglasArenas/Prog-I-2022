@@ -7,7 +7,6 @@ from sqlalchemy import func
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 class Poem(Resource):
-    @jwt_required()
     def get(self, id):
         poem = db.session.query(PoemModel).get_or_404(id)
         return poem.to_json_short()
