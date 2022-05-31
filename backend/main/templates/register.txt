@@ -1,3 +1,7 @@
 Bienvenido {{user.name}}!
 
 Gracias por registrarte en nuestro sistema.
+
+Cargar tus poemas
+Eliminar poemas
+Buscar poemas
