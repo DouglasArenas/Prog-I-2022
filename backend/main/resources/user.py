@@ -19,8 +19,8 @@ class User(Resource):
                 db.session.add(user)
                 db.session.commit()
                 return user.to_json(), 201
-            else:
-                return user.to_json_short(), 201
+        else:
+            return user.to_json_short(), 201
     
     @jwt_required()
     def put(self, id):

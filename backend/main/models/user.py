@@ -61,8 +61,8 @@ class User(db.Model):
 
     def to_json_short(self):
         user_json = {
-            'id' : self.id,
             'name' : self.name,
+            'poems' : [poem.to_json() for poem in self.poems]
         }
         return user_json
 

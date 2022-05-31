@@ -35,9 +35,9 @@ class Qualification(Resource):
             db.session.commit() 
             return qualification.to_json(), 201   
         else:
-            return "Only admins and poets can modify qualifications"
+            return "Only poets can modify qualifications"
 
-class Qualifications(Resource):
+class Qualifications(Resource, id):
     def get(self):
         qualifications = db.session.query(QualificationModel).all()
         return jsonify([qualification.to_json() for qualification in qualifications])
@@ -45,6 +45,13 @@ class Qualifications(Resource):
     @jwt_required()
     def post(self):
         qualification = QualificationModel.from_json(request.get_json())
-        db.session.add(qualification)
-        db.session.commit()
-        return qualification.to_json(), 201
+        claims = get_jwt()
+        if "role" in claims:
+            if claims["role"] == "poet":
+                db.session.add(qualification)
+                db.session.commit()
+                return qualification.to_json(), 201
+            else:
+                return "Only poets can create poems"
+        else:
+            return "you must be a registered user"
