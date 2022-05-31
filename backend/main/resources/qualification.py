@@ -5,9 +5,10 @@ from main.models import QualificationModel
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 class Qualification(Resource):
+
     def get(self, id):
         qualification = db.session.query(QualificationModel).get_or_404(id)
-        return qualification.to_json_short()
+        return qualification.to_json()
 
     @jwt_required()
     def delete(self, id):
@@ -23,7 +24,7 @@ class Qualification(Resource):
                 return "Only admins and poets can delete qualifications"
     
     @jwt_required()
-    def put(self,id):
+    def put(self, id):
         user_id = get_jwt_identity()
         qualification = db.session.query(QualificationModel).get_or_404(id)
         if user_id == qualification.user_id:
@@ -39,11 +40,11 @@ class Qualification(Resource):
 class Qualifications(Resource):
     def get(self):
         qualifications = db.session.query(QualificationModel).all()
-        return jsonify([qualification.to_json_short() for qualification in qualifications])
+        return jsonify([qualification.to_json() for qualification in qualifications])
     
-    @jwt_required
+    @jwt_required()
     def post(self):
         qualification = QualificationModel.from_json(request.get_json())
         db.session.add(qualification)
         db.session.commit()
-        return qualification.to_json_short(), 201
+        return qualification.to_json(), 201

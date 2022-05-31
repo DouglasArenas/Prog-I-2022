@@ -8,7 +8,7 @@ class Poem(db.Model):
     date_time = db.Column(db.DateTime, nullable=False, default=dt.datetime.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     # Relaciones
-    author = db.relationship('User', back_populates="poems", uselist=False, single_parent=True)
+    user = db.relationship('User', back_populates="poems", uselist=False, single_parent=True)
     qualifications = db.relationship('Qualification', back_populates="poem", cascade="all, delete-orphan")
 
     def __repr__(self):
@@ -24,16 +24,16 @@ class Poem(db.Model):
                 qualification_list.append(score)
             mean = statistics.mean(qualification_list)
 
-            return mean
+        return mean
 
     def to_json(self):
         poem_json = {
             'id' : self.id,
             'title' : str(self.title),
             'body' : str(self.body),
-            'author' : self.author.to_json_short(),
+            'author' : self.user.to_json(),
             'date' : str(self.date_time.strftime("%d-%m-%Y")),
-            'qualifications' : [qualification.to_json_short() for qualification in self.qualifications],
+            'qualifications' : [qualification.to_json() for qualification in self.qualifications],
             'score_mean' : self.score_mean()
         }
         return poem_json

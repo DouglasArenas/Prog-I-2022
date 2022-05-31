@@ -9,7 +9,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 class Poem(Resource):
     def get(self, id):
         poem = db.session.query(PoemModel).get_or_404(id)
-        return poem.to_json_short()
+        return poem.to_json()
 
     @jwt_required()
     def delete(self, id):
@@ -65,7 +65,7 @@ class Poems(Resource):
                     if key == "user_id":
                         poems = poems.filter(PoemModel.user_id == value)
                     if key == "user_name":
-                        poems = poems.user_name(PoemModel.author.has(UserModel.name.like('%'+value+'%')))
+                        poems = poems.user_name(PoemModel.user.has(UserModel.name.like('%'+value+'%')))
                     if key == "created[gt]":
                         poems = poems.filter(PoemModel.date_time >= datetime.strptime(value, '%d-%m-%Y'))
                     if key == "created[lt]":
@@ -73,9 +73,9 @@ class Poems(Resource):
                     # Order
                     if key == "sort_by":
                         if value == "author":
-                            poems = poems.order_by(PoemModel.author)
+                            poems = poems.order_by(PoemModel.user)
                         if value == "author[desc]":
-                            poems = poems.order_by(PoemModel.author.desc())
+                            poems = poems.order_by(PoemModel.user.desc())
                         if value == "date":
                             poems == poems.order_by(PoemModel.date_time)
                         if value == "date[desc]":
@@ -96,7 +96,7 @@ class Poems(Resource):
                     })
         else:
             return jsonify({
-                "poems":[poem.to_json() for poem in poems.items],
+                "poems":[poem.to_json_short() for poem in poems.items],
                 "total": poems.total, 
                 "pages": poems.pages, 
                 "page": page

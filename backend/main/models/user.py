@@ -8,8 +8,8 @@ class User(db.Model):
     password = db.Column(db.String(100), nullable=False)
     role = db.Column(db.String(100), nullable=False)
     # Relaciones
-    qualifications = db.relationship('Qualification', back_populates="author", cascade="all, delete-orphan")
-    poems = db.relationship('Poem', back_populates="author", cascade="all, delete-orphan")
+    qualifications = db.relationship('Qualification', back_populates="user", cascade="all, delete-orphan")
+    poems = db.relationship('Poem', back_populates="user", cascade="all, delete-orphan")
 
     #Getter de la contraseña plana no permite leerla
     @property
@@ -31,9 +31,9 @@ class User(db.Model):
         return f'<Name: {self.name}, email : {self.email}, role: {self.role}>'
 
     # Objeto a JSON
-    def to_json(self):
+    def to_json_complete(self):
         poems = [poem.to_json() for poem in self.poems]
-        qualifications = [qualification.to_json_short() for qualification in self.qualifications]
+        qualifications = [qualification.to_json() for qualification in self.qualifications]
         user_json = {
             'id' : self.id,
             'name' : self.name,
@@ -47,11 +47,22 @@ class User(db.Model):
         }
         return user_json
 
+    def to_json(self):
+        user_json = {
+            'id' : self.id,
+            'name' : str(self.name),
+            'email' : str(self.email),
+            'role' : str(self.role),
+            'num_poem' : len(self.poems),
+            'num_qualifications' : len(self.qualifications),
+            'poems' : [poem.to_json() for poem in self.poems]
+        }
+        return user_json
+
     def to_json_short(self):
         user_json = {
             'id' : self.id,
             'name' : self.name,
-            'email' : self.email
         }
         return user_json
 
