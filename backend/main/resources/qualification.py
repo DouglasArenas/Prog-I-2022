@@ -37,7 +37,7 @@ class Qualification(Resource):
         else:
             return "Only poets can modify qualifications"
 
-class Qualifications(Resource, id):
+class Qualifications(Resource):
     def get(self):
         qualifications = db.session.query(QualificationModel).all()
         return jsonify([qualification.to_json() for qualification in qualifications])
