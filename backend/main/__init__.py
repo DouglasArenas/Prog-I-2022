@@ -45,7 +45,7 @@ def create_app():
 
     from main.auth import routes
     # Importar blueprint
-    app.register_blueprint(routes.auth)
+    app.register_blueprint(auth.routes.auth)
 
     #Configuración de mail
     app.config['MAIL_HOSTNAME'] = os.getenv('MAIL_HOSTNAME')
