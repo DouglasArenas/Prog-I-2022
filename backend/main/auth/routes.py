@@ -47,3 +47,18 @@ def register():
             db.session.rollback()
             return str(error), 409
         return user.to_json() , 201
+
+
+@auth.route("/refresh", methods=["POST"])
+@jwt_required(refresh=True)
+def refresh_token():
+    identity = get_jwt_identity()
+    access_token = create_access_token(identity=identity, fresh=False)
+    return jsonify(access_token=access_token)
+
+
+# Only allow fresh JWTs to access this route with the `fresh=True` arguement.
+@auth.route("/protected", methods=["GET"])
+@jwt_required(fresh=True)
+def protected():
+    return jsonify(foo="bar")
