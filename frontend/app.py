@@ -5,12 +5,11 @@ from flask import Flask
 import os
 #Importar DotEnv para manejar variables de entorno
 from dotenv import load_dotenv
-
 #Cargar variables de entorno de archivo .env
 load_dotenv()
 #Inicializar aplicación Flask
 app = Flask(__name__)
-
+app.app_context().push()
 #Verificar que el script se este ejecutando directamente
 if __name__ == '__main__':
     #Correr servidor web
