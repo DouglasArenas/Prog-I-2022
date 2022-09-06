@@ -12,25 +12,25 @@ def main():
     return render_template('main.html')
 
 @app.route('/profile/admin')
-def profile():
+def admin_profile():
     return render_template('admin_profile.html')
 
 @app.route('/login')
-def profile():
+def login():
     return render_template('login.html')
 
 @app.route('/register')
-def profile():
+def register():
     return render_template('register_user.html')
 
 @app.route('/main')
-def profile():
+def user_main():
     return render_template('user_main.html')
 
 @app.route('/profile/user/modify')
-def profile():
+def modify_user():
     return render_template('user_modify.html')
 
 @app.route('/profile/user')
-def profile():
+def user_profile():
     return render_template('user_profile.html')
