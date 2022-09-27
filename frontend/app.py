@@ -1,6 +1,4 @@
 #Instalar python3-venv para poder manejar entornos virtuales
-#Importar Flask
-from flask import Flask
 #Importar librería os
 import os
 #Importar DotEnv para manejar variables de entorno
