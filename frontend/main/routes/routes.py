@@ -1,4 +1,5 @@
-from flask import Flask, Blueprint, render_template
+from email import header
+from flask import Flask, Blueprint, render_template, make_response, request
 import requests, json
 
 
@@ -6,21 +7,31 @@ app = Blueprint('app', __name__, url_prefix='/')
 
 @app.route('/')
 def index():
+    api_url = "http://127.0.0.1:5000/poemas"
+    cookie = request.cookies.get("access_token")
+    data = {"page" : 1, "per_page" : 10}
+    headers = {f"Content-Type" : "application/json", "Authorization" : "Bearer {cookie}"}
+    response = request
     return render_template('main.html')
 
 @app.route('/profile/admin')
 def admin_profile():
     return render_template('admin_profile.html')
 
-@app.route('/auth/login')
+@app.route('/login')
 def login():
     api_url = "http://127.0.0.1:5000/auth/login"
-    data = {"email":"d.arenas@alumno.um.edu.ar", "password":"1234"}
-    headers = {"Content-Type":"aplication/json"}
+    data = {"email":"douglasarenas71@gmail.com", "password":"1234"}
+    headers = {"Content-Type": "application/json"}
     response = requests.post(api_url, json=data, headers=headers)
+    print(response.status_code)
+    print(response.text)
     token = json.loads(response.text)
     token = token["access_token"]
-    return render_template('login.html')
+    print(token)
+    resp = make_response(render_template("login.html"))
+    resp.set_cookie("access_token", token)
+    return resp
 
 @app.route('/register')
 def register():
