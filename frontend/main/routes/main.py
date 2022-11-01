@@ -1,5 +1,5 @@
 from email import header
-from flask import Flask, Blueprint, render_template, make_response, request
+from flask import Flask, Blueprint, current_app, render_template, make_response, request
 import requests, json
 
 
@@ -7,7 +7,7 @@ app = Blueprint('app', __name__, url_prefix='/')
 
 @app.route('/')
 def index():
-    api_url = "http://127.0.0.1:5000/poemas"
+    api_url = f'{current_app.config["API_URL"]}'
     cookie = request.cookies.get("access_token")
     data = {"page" : 1, "per_page" : 10}
     headers = {f"Content-Type" : "application/json", "Authorization" : "Bearer {cookie}"}
@@ -20,7 +20,7 @@ def admin_profile():
 
 @app.route('/login')
 def login():
-    api_url = "http://127.0.0.1:5000/auth/login"
+    api_url = f'{current_app.config["API_URL"]}/auth/login'
     data = {"email":"douglasarenas71@gmail.com", "password":"1234"}
     headers = {"Content-Type": "application/json"}
     response = requests.post(api_url, json=data, headers=headers)
