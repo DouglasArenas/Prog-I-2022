@@ -8,7 +8,7 @@ from main import create_app
 app = create_app()
 load_dotenv()
 #Inicializar aplicación Flask
-app.app_context().push()
+# app.app_context().push()
 #Verificar que el script se este ejecutando directamente
 if __name__ == '__main__':
     #Correr servidor web
