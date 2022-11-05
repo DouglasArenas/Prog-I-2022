@@ -6,8 +6,8 @@ class Poem(db.Model):
     title = db.Column(db.String(100), nullable=False)
     body = db.Column(db.String(1000), nullable=False)
     date_time = db.Column(db.DateTime, nullable=False, default=dt.datetime.now())
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     # Relaciones
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', back_populates="poems", uselist=False, single_parent=True)
     qualifications = db.relationship('Qualification', back_populates="poem", cascade="all, delete-orphan")
 
@@ -23,7 +23,6 @@ class Poem(db.Model):
                 score = qualification.score
                 qualification_list.append(score)
             mean = statistics.mean(qualification_list)
-
         return mean
 
     def to_json(self):
@@ -32,7 +31,7 @@ class Poem(db.Model):
             'title' : str(self.title),
             'body' : str(self.body),
             'author' : self.user.to_json(),
-            'date' : str(self.date_time.strftime("%d-%m-%Y")),
+            'date_time' : str(self.date_time.strftime("%d-%m-%Y")),
             'qualifications' : [qualification.to_json() for qualification in self.qualifications],
             'score_mean' : self.score_mean()
         }
@@ -43,6 +42,9 @@ class Poem(db.Model):
             'id' : self.id,
             'title' : self.title,
             'body' : self.body,
+            'date_time' : str(self.date_time.strftime("%d-%m-%Y")),
+            'author' : self.user.to_json_short(),
+            'score_mean' : self.score_mean()
         }
         return poem_json
 
@@ -52,4 +54,5 @@ class Poem(db.Model):
         title = poem_json.get('title')
         user_id = poem_json.get('user_id')
         body = poem_json.get('body')
-        return Poem(id=id, title=title, user_id=user_id, body=body)
+        date_time = poem_json.get('date_time')
+        return Poem(id=id, title=title, user_id=user_id, body=body, date_time=date_time)

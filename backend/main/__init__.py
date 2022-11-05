@@ -28,12 +28,12 @@ def create_app():
     #Aquí se inicializarán el resto de los módulos de la aplicación
     import main.resources as resources
 
-    api.add_resource(resources.QualificationResource, '/calificacion/<id>')
-    api.add_resource(resources.QualificationsResource, '/calificaciones')
-    api.add_resource(resources.PoemResource, '/poema/<id>')
-    api.add_resource(resources.PoemsResource, '/poemas')
-    api.add_resource(resources.UserResource, '/usuario/<id>')
-    api.add_resource(resources.UsersResource, '/usuarios')
+    api.add_resource(resources.QualificationResource, '/qualification/<id>')
+    api.add_resource(resources.QualificationsResource, '/qualifications')
+    api.add_resource(resources.PoemResource, '/poem/<id>')
+    api.add_resource(resources.PoemsResource, '/poems')
+    api.add_resource(resources.UserResource, '/user/<id>')
+    api.add_resource(resources.UsersResource, '/users')
 
     api.init_app(app)
 
@@ -45,7 +45,7 @@ def create_app():
 
     from main.auth import routes
     # Importar blueprint
-    app.register_blueprint(auth.routes.auth)
+    app.register_blueprint(routes.auth)
 
     #Configuración de mail
     app.config['MAIL_HOSTNAME'] = os.getenv('MAIL_HOSTNAME')

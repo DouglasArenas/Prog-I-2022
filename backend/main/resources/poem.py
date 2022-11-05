@@ -38,7 +38,7 @@ class Poems(Resource):
     def get(self):
         poems = db.session.query(PoemModel)
         page = 1
-        per_page = 10
+        per_page = 5
         claims = get_jwt()
         identify_user = get_jwt_identity()
         if identify_user:
@@ -111,12 +111,9 @@ class Poems(Resource):
         claims = get_jwt()
         if "role" in claims:
             if claims["role"] == "poet":
-                if len(user.poems) == 0 or len(user.qualifications) >= 2:
-                    poem.user_id = user_id
-                    db.session.add(poem)
-                    db.session.commit()
-                    return poem.to_json(), 201
-                else:
-                    return "There are not enough qualifications from this user"
+                poem.user_id = user_id
+                db.session.add(poem)
+                db.session.commit()
+                return poem.to_json(), 201
             else:
                 return "Only poets can create poems"
