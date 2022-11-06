@@ -2,13 +2,13 @@
 #Importar librería os
 import os
 #Importar DotEnv para manejar variables de entorno
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from main import create_app
 #Cargar variables de entorno de archivo .env
 app = create_app()
-load_dotenv()
+# load_dotenv()
 #Inicializar aplicación Flask
-# app.app_context().push()
+app.app_context().push()
 #Verificar que el script se este ejecutando directamente
 if __name__ == '__main__':
     #Correr servidor web

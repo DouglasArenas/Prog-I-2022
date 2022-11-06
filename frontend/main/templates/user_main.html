@@ -24,69 +24,50 @@
 			</div>
 		</nav>
 
-        <div class="c3000ontainer">
+        <div class="container">
 			<div class="row">
 				<div class="col">
 					<table class="table table-hover text-dark align-middle">
 						<tr class="table-secondary">
-							<th><select class="form-select" aria-label="Default select example">
-								<option selected>Title</option>
-								<option value="1">Asc</option>
-								<option value="2">Desc</option></select>
-							</th>
-							<th><select class="form-select" aria-label="Default select example">
-								<option selected>Author</option>
-								<option value="1">Asc</option>
-								<option value="2">Desc</option></select>
-							</th>
-							  <th><select class="form-select" aria-label="Default select example">
-								<option selected>Date</option>
-								<option value="1">Asc</option>
-								<option value="2">Desc</option>
-							  </select></th>
-							  <th><select class="form-select" aria-label="Default select example">
-								<option selected>Ranking</option>
-								<option value="1">Asc</option>
-								<option value="2">Desc</option>
-							  </select></th>
+							<th>Title</th><th>Author</th><th>Date</th><th>Ranking</th>
 						</tr>
-						<tr>
-							<td>Title 1</td><td>Author 6</td><td>Date 1</td><td>Ranking 10</td>
-						</tr>
-						<tr>
-							<td>Title 2</td><td>Author 5</td><td>Date 22</td><td>Ranking 20</td>
-						</tr>
-						<tr>
-							<td>Title 3</td><td>Author 4</td><td>Date 33</td><td>Ranking 30</td>
-						</tr>
-						<tr>
-							<td>Title 4</td><td>Author 3</td><td>Date 44</td><td>Ranking 40</td>
-						</tr>
-						<tr>
-							<td>Title 5</td><td>Author 2</td><td>Date 55</td><td>Ranking 30</td>
-						</tr>
-						<tr>
-							<td>Title 6</td><td>Author 1</td><td>Date 66</td><td>Ranking 20</td>
-						</tr>
+						<tbody>
+							{% for poem in poems %}
+							<tr>
+								<td>{{poem['title']}}</td><td>{{poem.author}}</td><td>{{poem.body}}</td><td>{{poem.score_mean}}</td><td><a type="button" href="#">View more...</a></td>
+							</tr>
+							{% endfor %}
+						</tbody>
 					</table>
 				</div>
 			</div>
         </div>
 
-        <nav aria-label="..." >
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                <a class="page-link" href="#">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item active">
-                <span class="page-link">2</span>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
-        </nav>
+        <div class="container_footer" >
+        	<div class="position-absolute start-50 translate-middle-x">
+            	<div class="row">
+                	<div class="col-sm-4 col-lg-12">
+                    	<nav aria-label="Page navigation example">
+                        	<ul class="pagination justify-content-center">
+                        	<li class="page-item">
+                            	<a class="page-link" href="#" aria-label="Previous">
+                            	<span aria-hidden="true">&laquo;</span>
+                            	</a>
+                        	</li>
+                        	<li class="page-item"><a class="page-link" href="#">1</a></li>
+                        	<li class="page-item"><a class="page-link" href="#">2</a></li>
+                        	<li class="page-item"><a class="page-link" href="#">3</a></li>
+                        	<li class="page-item">
+                            	<a class="page-link" href="#" aria-label="Next">
+                            	<span aria-hidden="true">&raquo;</span>
+                            	</a>
+                        	</li>
+                        	</ul>
+                    	</nav>
+                	</div>
+            	</div>
+        	</div>
+    	</div>
+
 
 {% endblock %}
