@@ -9,7 +9,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 class Poem(Resource):
     def get(self, id):
         poem = db.session.query(PoemModel).get_or_404(id)
-        return poem.to_json()
+        return poem.to_json_short()
 
     @jwt_required()
     def delete(self, id):
@@ -70,6 +70,9 @@ class Poems(Resource):
                         poems = poems.filter(PoemModel.date_time >= datetime.strptime(value, '%d-%m-%Y'))
                     if key == "created[lt]":
                         poems = poems.filter(PoemModel.date_time <= datetime.strptime(value, '%d-%m-%Y'))
+                    if key == "qualification":
+                        poems = poems.outerjoin(PoemModel.marks).group_by(PoemModel.id).having(func.mean(QualificationModel.score).like(float(value)))
+                    
                     # Order
                     if key == "sort_by":
                         if value == "author":
