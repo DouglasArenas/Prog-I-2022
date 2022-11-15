@@ -17,10 +17,6 @@ def index():
     print(poems)
     return render_template('main.html', poems=poems["poems"])
 
-@app.route('/profile/admin')
-def admin_profile():
-    return render_template('admin_profile.html')
-
 @app.route('/login', methods=['GET','POST'])
 def login():
     if (request.method == 'POST'):
@@ -54,9 +50,12 @@ def login():
     else:
         return render_template('login.html')
 
-@app.route('/register')
-def register():
-    return render_template('register_user.html')
+@app.route('/logout')
+def logout():
+    req = make_response(redirect(url_for('app.index')))
+    req.delete_cookie("access_token")
+    req.delete_cookie("id")
+    return req
 
 @app.route('/home')
 def user_main():
@@ -77,18 +76,69 @@ def user_main():
 def modify_user():
     return render_template('user_modify.html')
 
+@app.route('/profile/user/poemas')
+def my_poems():
+    jwt = request.cookies.get('access_token')
+    if jwt:
+        try:
+            jwt_decoded = jwt.decode(request.cookies.get['access_token'], algorithms=['HS256'])
+            print(jwt_decoded)
+        except:
+            print('Decoding jwt failed.')
+        #Obtenemos usuario
+        data_user = {"id": jwt_decoded['id'], "email":jwt_decoded["email"]}
+
+        user_id = request.cookies.get('id')
+        api_url = f'{current_app.config["API_URL"]}/user/{user_id}'
+        print("Acá esta el id", user_id)
+        headers = {"Content-Type" : "application/json", "Authorization" : f"Bearer {jwt}"}
+        response = requests.get(api_url, headers=headers)
+        print("El Response user",response)
+        user = json.loads(response.text)
+        print("Este es el usuario", user)
+
+        #Obtenemos poemas del usuario
+        api_url_poems = f'{current_app.config["API_URL"]}/poems'
+        data_poems = {"page":1,"per_page":10, "user_id":data_user['id']}
+        headers_poems = {"Content-Type":"application/json", "Authorization" : f"Bearer {jwt}"}
+        response_poems = requests.get(api_url_poems, json=data_poems, headers=headers_poems)
+        response = json.loads(response_poems.text)
+        print(response)
+
+        return render_template('mis_poemas.html', jwt=jwt, user=user)
+    else:
+        return redirect(url_for('app.login'))
+
+    api_url = f'{current_app.config["API_URL"]}/poems'
+    # Envio de la pagina y cuantos datos por pagina.
+    data = {"page": page, "perpage": perpage, "user_id": id}
+    # Obtengo el jwt del logueo e instancio headers y le agrego el jwt.
+    headers = get_headers(without_token = True)
+    # Creamos el response y le enviamos el data y headers.
+    return requests.get(api_url, json = data, headers = headers)
+
+    data = jwt.decode(token, options=jwt_options, algorithms=['HS256'])
+    return {'id': data['id'], 'email': data['email']}
+
+    jwt = f.get_jwt()
+    if jwt:
+        user = auth.load_user(jwt)
+        resp = f.get_poems_by_id(user["id"])
+        poems = json.loads(resp.text)
+        poemsList = poems["poems"]
+        return render_template('view_poet_mypoems.html', jwt=jwt, poems = poemsList)
+    else:
+        return redirect(url_for('main.login'))
 @app.route('/profile/user')
 def user_profile():
-    if request.cookies.get('access_token'):
+    jwt = request.cookies.get('access_token')
+    if jwt:
         api_url = f'{current_app.config["API_URL"]}/poems'
-        
         data = { "page": 1, "per_page": 10 }
-
         headers = { "Content-Type": "application/json" }
-
         response = requests.get(api_url, json=data, headers=headers) 
-        
-        return render_template('user_profile.html', poems = ["Poems"])
+        poems = json.loads(response.text)
+        return render_template('user_profile.html', jwt=jwt, poems=poems ["poems"])
     else:
         return redirect(url_for('app.login'))
 
@@ -100,12 +150,6 @@ def view_poem(id):
     poem = json.loads(response.text)
     return render_template('view_poem.html', poem = poem)
 
-@app.route('/logout')
-def logout():
-    req = make_response(redirect(url_for('app.index')))
-    req.delete_cookie("access_token")
-    req.delete_cookie("id")
-    return req
 
 @app.route('/poem/create', methods=['GET','POST'])
 def create_poem():
@@ -137,10 +181,21 @@ def create_poem():
     else:
         return redirect(url_for('app.login'))
 
-@app.route('/poem/<int:id>/delete')
+@app.route('/poem/<int:id>/delete', methods=['DELETE'])
 def delete_poem(id):
-    if request.cookies.get('accsess_token'):
-        api_url = f'{current_app.config["API_URL"]}/poem/{id}'
-        headers = {"Content-Type" : "application/json"}
-        response = requests.delete(api_url, headers=headers)
-        return response
+    jwt = request.cookies.get('accsess_token')
+    if jwt:
+        if request.method == 'DELETE':
+            api_url = f'{current_app.config["API_URL"]}/poem/{id}'
+            headers = {"Content-Type" : "application/json","Authorization":f"Bearer {jwt}"}
+            response = requests.delete(api_url, headers=headers)
+            print("respuesta del delete",response)
+            if response.ok:
+                req = make_response(redirect(url_for('app.user_profile')))
+                return req
+    else:
+        return redirect(url_for('main.login'))
+
+@app.route('/profile/admin')
+def admin_profile():
+    return render_template('admin_profile.html')
