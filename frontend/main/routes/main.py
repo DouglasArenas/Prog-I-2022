@@ -7,7 +7,8 @@ app = Blueprint('app', __name__, url_prefix='/')
 
 @app.route('/')
 def index():
-    api_url = f'{current_app.config["API_URL"]}/poems' 
+    api_url = f'{current_app.config["API_URL"]}/poems'
+    print("Aca esta la url",api_url)
     data = { "page": 1, "per_page": 10 }
     headers = { "Content-Type": "application/json" }
     response = requests.get(api_url, json=data, headers=headers)
@@ -183,18 +184,24 @@ def create_poem():
 
 @app.route('/poem/<int:id>/delete', methods=['DELETE'])
 def delete_poem(id):
-    jwt = request.cookies.get('accsess_token')
+    jwt = request.cookies.get('access_token')
     if jwt:
-        if request.method == 'DELETE':
-            api_url = f'{current_app.config["API_URL"]}/poem/{id}'
-            headers = {"Content-Type" : "application/json","Authorization":f"Bearer {jwt}"}
-            response = requests.delete(api_url, headers=headers)
-            print("respuesta del delete",response)
-            if response.ok:
-                req = make_response(redirect(url_for('app.user_profile')))
-                return req
+        api_url = f'{current_app.config["API_URL"]}/poem/{id}'
+        headers = {"Content-Type" : "application/json","Authorization":f"Bearer {jwt}"}
+        response = requests.delete(api_url, headers=headers)
+        print("respuesta del delete",response)
+        return redirect(url_for('app.user_main'))
     else:
         return redirect(url_for('main.login'))
+
+        if request.cookies.get('access_token'):
+            api_url = f'{current_app.config["API_URL"]}/poema/{id}'
+            headers = get_headers()
+            return requests.delete(api_url, headers=headers)
+            f.delete_poema(id=id)
+            return redirect(url_for('main.usuario'))
+        else:
+            return redirect(url_for('main.login'))
 
 @app.route('/profile/admin')
 def admin_profile():
