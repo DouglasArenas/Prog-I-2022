@@ -1,4 +1,4 @@
-from flask import Flask, session,Blueprint, current_app, render_template, make_response, request, redirect, url_for
+from flask import Flask, Blueprint, current_app, render_template, make_response, request, redirect, url_for
 import requests
 import json
 
@@ -100,25 +100,47 @@ def view_poem(id):
     poem = json.loads(response.text)
     return render_template('view_poem.html', poem = poem)
 
-# else:
-    # return redirect(url_for('app.login'))
 @app.route('/logout')
 def logout():
-    #Crear una request de redirección
     req = make_response(redirect(url_for('app.index')))
-    #Borrar cookie
     req.delete_cookie("access_token")
     req.delete_cookie("id")
     return req
 
-@app.route('/poem/create')
+@app.route('/poem/create', methods=['GET','POST'])
 def create_poem():
-    return render_template('create_poem.html')
+    jwt = request.cookies.get('access_token')
+    if jwt:
+        if request.method == 'POST':
+            title = request.form['title']
+            body = request.form['body']
+            print(title)
+            print(body)
+            user_id = request.cookies.get("id")
+            print(user_id)
+            data = {"title": title, "body": body, "user_id": user_id  }
+            print(data)
+            headers = {"Content-Type" : "application/json", "Authorization" : f"Bearer {jwt}"}
+            if title != "" and body != "":
+                response = requests.post(f'{current_app.config["API_URL"]}/poems', json=data, headers=headers)
+                print(response)
+                if response.ok:
+                    response = json.loads(response.text)
+                    return redirect(url_for('app.view_poem', id=response["id"], jwt=jwt))
+                else:
+                    return redirect(url_for('app.create_poem'))
+            else:
+                return redirect(url_for('app.create_poem'))
+        else:
+            #Mostrar template
+            return render_template('create_poem.html', jwt=jwt)
+    else:
+        return redirect(url_for('app.login'))
 
 @app.route('/poem/<int:id>/delete')
 def delete_poem(id):
-    if request.cookies.get('accsess_token')
-    api_url = f'{current_app.config["API_URL"]}/poem/{id}'
-    headers = {"Content-Type" : "application/json"}
-    response = requests.delete(api_url, headers=headers)
-    return response
+    if request.cookies.get('accsess_token'):
+        api_url = f'{current_app.config["API_URL"]}/poem/{id}'
+        headers = {"Content-Type" : "application/json"}
+        response = requests.delete(api_url, headers=headers)
+        return response

@@ -2,14 +2,14 @@
 
 {% block content %}
 <div class="container">  
-    <form>
+    <form method="POST" action="/poem/create">
         <div class="form-group">
             <label for="texto">Title</label>
-            <input type="text" name="campotexto" id="texto" class="form-control">
+            <input type="text" name="title" class="form-control">
         </div>
         <div class="form-group">
             <label for="area">Body</label>
-            <textarea name="areadetexto" rows="10" cols="40"  class="form-control" id="area"></textarea>
+            <textarea name="body" rows="10" cols="40"  class="form-control" id="area"></textarea>
         </div>
         <div class="container justify-content-center mt-3">
             <div class="row">
