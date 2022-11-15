@@ -19,7 +19,6 @@ class Qualification(db.Model):
         qualification_json = {
             'id': self.id,
             'name': str(self.name),
-            'password': str(self.password),
             'role': str(self.role),
             'email': str(self.email),
             'poem' : poem,

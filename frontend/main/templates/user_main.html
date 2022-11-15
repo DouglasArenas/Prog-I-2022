@@ -17,7 +17,7 @@
 				<div class="row">
 					<div class="col-md-15">
 						<a class="btn btn-primary" href="{{url_for('app.user_profile')}}">Me</a>
-						<a class="btn btn-danger" href="{{url_for('app.index')}}">Logout</a>
+						<a class="btn btn-danger" href="{{url_for('app.logout')}}">Logout</a>
 					</div>
 				</div>
 			  </div>
@@ -34,7 +34,7 @@
 						<tbody>
 							{% for poem in poems %}
 							<tr>
-								<td>{{poem.title}}</td><td>{{poem.author}}</td><td>{{poem.body}}</td><td>{{poem.score_mean}}</td><td><a type="button" href="#">View more...</a></td>
+								<td>{{poem.title}}</td><td>{{poem.author.name}}</td><td>{{poem.body}}</td><td>{{poem.score_mean}}</td><td><a type="button" href="{url_for('app.view_poem', id=poem.id)}}">View more...</a></td>
 							</tr>
 							{% endfor %}
 						</tbody>

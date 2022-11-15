@@ -1,38 +1,16 @@
 {% extends 'base.html' %}
 
-{% block menu %}
-{% endblock %}
-
 {% block content %}
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-            <div class="container">
-              <a class="navbar-brand text-dark" href="{{url_for('app.user_main')}}">Poems</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-    
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-                <div class="row">
-                    <div class="col-md-15">
-                        <a class="btn btn-primary" href="{{url_for('app.user_profile')}}">Back</a>
-                    </div>
-                </div>
-              </div>
-            </div>
-        </nav>
-
-
-        <div class="container">
+        <div class="container mt-5">
             <div class="row d-flex justify-content-center">
               <div class="form-group col-md-4">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" placeholder="UserName">
+                <input type="text" class="form-control disabled" placeholder="UserName">
               </div>
               <div class="form-group col-md-4">
-                <label for="email">E-mail address</label>
-                <input type="email" class="form-control" placeholder="User@mail.com">
+                <label for="newName">New user name</label>
+                <input type="text" class="form-control" placeholder="New user name">
               </div>
             </div>
             <div class="row justify-content-center mt-5">

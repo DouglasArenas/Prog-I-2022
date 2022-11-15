@@ -1,28 +1,6 @@
 {% extends 'base.html' %}
 
-{% block menu %}
-{% endblock %}
-
 {% block content %}
-
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-            <div class="container">
-              <a class="navbar-brand text-dark" href="{{url_for('app.user_main')}}">Poems</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-    
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-                <div class="row">
-                    <div class="col-md-15">
-                        <a class="btn btn-danger" href="{{url_for('app.index')}}">Logout</a>
-                    </div>
-                </div>
-              </div>
-            </div>
-        </nav>
-
 
         <div class="container">
           <fieldset disabled>
@@ -52,8 +30,8 @@
         <div class="container">
           <div class="row mt-3 justify-content-center">
             <div class="col-sm-3 mt-3">
+              <a class="btn btn-success" href="{{url_for('app.create_poem')}}">Create new poem</a>
               <a class="btn btn-primary" href="{{url_for('app.modify_user')}}">Modify account</a>
-              <a class="btn btn-danger" href="{{url_for('app.index')}}">Delete account</a>
             </div>
           </div>
         </div>

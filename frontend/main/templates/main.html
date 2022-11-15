@@ -12,7 +12,7 @@
 						<tbody>
 							{% for poem in poems %}
 							<tr>
-								<td>{{poem.title}}</td><td></td><td>{{poem.body}}</td><td>{{poem.ranking}}</td><td><a type="button" href="">View more...</a></td>
+								<td>{{poem.title}}</td><td>{{poem.author.name}}</td><td>{{poem.body}}</td><td>{{poem.score_mean}}</td><td><a type="button" href="{{url_for('app.view_poem', id=poem.id)}}">View more...</a></td>
 							</tr>
 							{% endfor %}
 						</tbody>
