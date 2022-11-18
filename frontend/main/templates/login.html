@@ -8,11 +8,14 @@
               <form class="" method="POST" action="/login"> 
                     <div class="mb-3">
                       <label for="email" class="form-label">Email addres</label>
-                      <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter e-mail">
+                      <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter e-mail" required>
                     </div>
                     <div class="mb-3">
                       <label for="password" class="form-label">Password</label>
-                      <input type="password" name="password"class="form-control" id="password" aria-describedby="emailHelp" placeholder="Enter password">
+                      <input type="password" name="password"class="form-control" id="password" aria-describedby="emailHelp" placeholder="Enter password" required>
+                    </div>
+                    <div class="invalid-feedback">
+                      Incorrect email or password.
                     </div>
                   <div class="d-grid">
                       <button class="btn btn-primary" type="submit">Enviar</button>

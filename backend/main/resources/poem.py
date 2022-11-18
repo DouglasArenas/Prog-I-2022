@@ -17,21 +17,25 @@ class Poem(Resource):
         user_id = get_jwt_identity()
         poem = db.session.query(PoemModel).get_or_404(id)
         if "role" in claims:
-            if claims['role'] == "admin" or user_id == int(poem.user_id):
+            if user_id == int(poem.user_id):
                 db.session.delete(poem)
                 db.session.commit()
                 return '', 204
             else:
-                return "Only admins and poets can delete poems"
-    
-    """def put(self, id):
+                return "Only poets can delete poems"
+    @jwt_required()
+    def put(self, id):
+        claims = get_jwt()
+        user_id = get_jwt_identity()
         poem = db.session.query(PoemModel).get_or_404(id)
         data = request.get_json().items()
-        for key, value in data:
-            setattr(poem,key,value)
+        if "role" in claims:
+            if user_id == int(poem.user_id):
+                for key, value in data:
+                    setattr(poem,key,value)
         db.session.add(poem)
         db.session.commit()
-        return poem.to_json(), 201 """
+        return poem.to_json(), 201 
 
 class Poems(Resource):
     @jwt_required(optional=True)
@@ -50,7 +54,7 @@ class Poems(Resource):
                         page = int(value)
                     if key == "per_page":
                         per_page = int(value)
-            poems = db.session.query(PoemModel).filter(PoemModel.user_id != identify_user)
+            poems = db.session.query(PoemModel).filter(PoemModel.user_id == identify_user)
             poems = poems.outerjoin(PoemModel.qualifications).group_by(PoemModel.id).order_by(func.count(PoemModel.qualifications))
         else:
             if request.get_json():
@@ -97,6 +101,12 @@ class Poems(Resource):
                     "pages": poems.pages, 
                     "page": page
                     })
+            return jsonify({
+                "poems":[poem.to_json_short() for poem in poems.items],
+                "total": poems.total, 
+                "pages": poems.pages, 
+                "page": page
+                })
         else:
             return jsonify({
                 "poems":[poem.to_json_short() for poem in poems.items],

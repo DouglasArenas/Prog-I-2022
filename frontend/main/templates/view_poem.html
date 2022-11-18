@@ -14,7 +14,7 @@
   <div class="container">
     <div class="row mt-3 justify-content-center">
       <div class="col-sm-3 mt-3">
-        <a class="btn btn-primary" href="{{url_for('app.modify_user')}}">Modify poem</a>
+        <a class="btn btn-primary" href="{{url_for('app.modify_poem', id=poem.id)}}">Modify poem</a>
         <a class="btn btn-danger" href="{{url_for('app.delete_poem', id=poem.id)}}">Delete poem</a>
       </div>
     </div>

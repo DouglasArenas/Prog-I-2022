@@ -6,7 +6,7 @@
     <div class="row">
         <h2>Mis poemas</h2>
         <tbody>
-            {% for poem in user %}
+            {% for poem in poems %}
             <div class="container py-5">
               <div class="card container d-flex justify-content-center">
                 <div class="img-card"></div>
@@ -18,7 +18,7 @@
                     <p>{{poem.body}}</p>
                   </div>
                   <div class="btn-container">
-                    <a type="button" href="{{url_for('app.my_poems', id=poem.id)}}" id="view_btn">View All</a>
+                    <a type="button" href="{{url_for('app.view_poem', id=poem.id)}}" id="view_btn">View All</a>
                   </div>
                 </div>
               </div>
