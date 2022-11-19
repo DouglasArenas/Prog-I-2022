@@ -17,7 +17,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
             <div class="container">
               {% if request.cookies.get('access_token') %}
-              <a class="navbar-brand text-dark" href="{{url_for('app.user_main')}}">Poems</a>
+              <a class="navbar-brand text-dark" href="{{url_for('users.user_main')}}">Poems</a>
               {% else %}
               <a class="navbar-brand text-dark" href="{{url_for('app.index')}}">Poems</a>
               {% endif %}
@@ -32,9 +32,10 @@
                         <!-- <form>
                           <input class="btn-primary rounded" type="button" value="Back" onclick="history.back()">
                         </form>                       -->
-                        <a class="btn btn-primary" href="{{url_for('app.user_profile')}}">Me</a>
+                        <a class="btn btn-primary" href="{{url_for('users.user_profile')}}">Me</a>
 						            <a class="btn btn-danger" href="{{url_for('app.logout')}}">Logout</a>
                         {% else %}
+                        <a class="btn btn-success" href="{{url_for('app.register')}}">Register</a>
                         <a class="btn btn-primary" href="{{url_for('app.login')}}">Login</a>
                       {% endif %}
                     </div>

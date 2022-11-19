@@ -6,7 +6,7 @@
             <div class="row d-flex justify-content-center">
               <div class="form-group col-md-4">
                 <label for="name">Name</label>
-                <input type="text" class="form-control disabled" placeholder="UserName">
+                <input type="text" class="form-control disabled" placeholder="">
               </div>
               <div class="form-group col-md-4">
                 <label for="newName">New user name</label>
@@ -16,7 +16,7 @@
             <div class="row justify-content-center mt-5">
               <div class="from-group col-md-4">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" placeholder="Password">
+                <input type="password" class="form-control disabled" placeholder="Password">
               </div>
               <div class="form-group col-md-4">
                <label for="newPassword">New password</label>
@@ -25,7 +25,7 @@
             </div>
             <div class="row mt-5 justify-content-center">
                 <div class="d-grid col-sm-4">
-                    <a class="btn btn-primary" href="{{url_for('app.user_profile')}}">Save</a>
+                    <a class="btn btn-primary" href="{{url_for('users.user_profile')}}">Save</a>
                 </div>
             </div>
         </div>

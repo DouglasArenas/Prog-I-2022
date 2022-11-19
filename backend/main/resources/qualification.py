@@ -16,12 +16,12 @@ class Qualification(Resource):
         user_id = get_jwt_identity()
         qualification = db.session.query(QualificationModel).get_or_404(id)
         if "role" in claims:    
-            if claims['role'] == "admin" or user_id == qualification.user_id:
+            if user_id == qualification.user_id:
                 db.session.delete(qualification)
                 db.session.commit()
                 return '', 204
             else:
-                return "Only admins and poets can delete qualifications"
+                return "Only poets can delete qualifications"
     
     @jwt_required()
     def put(self, id):

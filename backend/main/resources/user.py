@@ -73,7 +73,6 @@ class Users(Resource):
             'page' : page
         })
 
-    @admin_required
     def post(self):
         user = UserModel.from_json(request.get_json())
         db.session.add(user)
