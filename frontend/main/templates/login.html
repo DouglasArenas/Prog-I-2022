@@ -1,27 +1,21 @@
 {% extends 'base.html' %}
 
+{% block head %}
+
+  {{ super() }}
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/styles_login.css')}}">
+
+{% endblock %}
+
 {% block content %}
 
-    <div class="container">
-      <div class="row d-flex justify-content-center">
-          <div class="col-md-4 border bg-light p-4 mt-5 rounded text-dark">
-              <form class="" method="POST" action="/login"> 
-                    <div class="mb-3">
-                      <label for="email" class="form-label">Email addres</label>
-                      <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter e-mail" required>
-                    </div>
-                    <div class="mb-3">
-                      <label for="password" class="form-label">Password</label>
-                      <input type="password" name="password"class="form-control" id="password" aria-describedby="emailHelp" placeholder="Enter password" required>
-                    </div>
-                    <div class="invalid-feedback">
-                      Incorrect email or password.
-                    </div>
-                  <div class="d-grid">
-                      <button class="btn btn-primary" type="submit">Enviar</button>
-                  </div>
-                </form> 
-          </div>
-      </div>
+<div class="login">
+	<h1>Login</h1>
+    <form method="post" action="/login">
+    	<input type="email" name="email" placeholder="Email" required="required" />
+        <input type="password" name="password" placeholder="Password" required="required" />
+        <button type="submit" class="btn btn-success btn-block btn-large">Login</button>
+    </form>
+</div>
 
-  {% endblock %}
+{% endblock %}

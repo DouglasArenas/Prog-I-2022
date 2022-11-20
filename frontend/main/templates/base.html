@@ -35,8 +35,11 @@
                         <a class="btn btn-primary" href="{{url_for('users.user_profile')}}">Me</a>
 						            <a class="btn btn-danger" href="{{url_for('app.logout')}}">Logout</a>
                         {% else %}
-                        <a class="btn btn-success" href="{{url_for('app.register')}}">Register</a>
-                        <a class="btn btn-primary" href="{{url_for('app.login')}}">Login</a>
+                          {% if request.endpoint == 'app.register' %}
+                            <a class="btn btn-primary" href="{{url_for('app.login')}}">Login</a>
+                          {% else %}
+                            <a class="btn btn-primary" href="{{url_for('app.register')}}">Register</a>
+                          {% endif %}
                       {% endif %}
                     </div>
                 </div>

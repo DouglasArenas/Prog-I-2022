@@ -61,7 +61,7 @@ def register():
             headers = { "Content-Type": "application/json" }
             response = requests.post(api_url, json = data, headers = headers)
             if response.ok:
-                return redirect(url_for("app.login"))
+                return redirect(url_for("users.user_main"))
             else:
                 return render_template("register.html")
         else:

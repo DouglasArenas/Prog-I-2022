@@ -20,11 +20,13 @@ def my_poems():
 
 @poems.route('/view/poem/<int:id>', methods=['GET'])
 def view_poem(id):
+    user_id = request.cookies.get("id")
     api_url = f'{current_app.config["API_URL"]}/poem/{id}'
     headers = {"Content-Type" : "application/json"}
     response = requests.get(api_url, headers=headers)
     poem = json.loads(response.text)
-    return render_template('poem_view.html', poem = poem)
+    print("ESTE ES EL POEMA",poem)
+    return render_template('poem_view.html', poem=poem, user_id=user_id)
 
 @poems.route('/poem/create', methods=['GET','POST'])
 def create_poem():
