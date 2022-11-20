@@ -9,18 +9,8 @@ from main.auth.decorators import admin_required
 class User(Resource):
     @jwt_required(optional=True)
     def get(self, id):
-        user_id = get_jwt_identity()
-        user = UserModel.from_json(request.get_json())
-        user = db.session.query(UserModel).get_or_404(user_id)
-        claims = get_jwt()
-        if "role" in claims:
-            if claims["role"] == "admin":
-                user.user_id = user_id
-                db.session.add(user)
-                db.session.commit()
-                return user.to_json(), 201
-        else:
-            return user.to_json_short(), 201
+        user = db.session.query(UserModel).get_or_404(id)
+        return user.to_json()
     
     @jwt_required()
     def put(self, id):
@@ -40,7 +30,7 @@ class User(Resource):
         return '', 204
 
 class Users(Resource):
-    @admin_required
+    @jwt_required()
     def get(self):
         page = 1
         per_page = 10

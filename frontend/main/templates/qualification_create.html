@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="container">  
+    <form method="POST" action="/poem/qualification/{{poem.id}}">
+        <div class="form-group">
+            <label for="texto">Score</label>
+            <input type="number" min="0" max="10" name="score" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="area">Comment</label>
+            <textarea name="comment" rows="10" cols="40"  class="form-control" id="area"></textarea>
+        </div>
+        <div class="container justify-content-center mt-3">
+            <div class="row">
+                <input type="submit"  class="btn btn-primary" value="Add">
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

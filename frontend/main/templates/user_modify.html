@@ -1,33 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+      <form method="POST" action="/profile/user/modify">
         <div class="container mt-5">
             <div class="row d-flex justify-content-center">
               <div class="form-group col-md-4">
+                <fieldset disabled>
                 <label for="name">Name</label>
-                <input type="text" class="form-control disabled" placeholder="">
+                <input type="text" name="name" class="form-control disabled" placeholder="{{user.name}}">
+                </fieldset>
               </div>
               <div class="form-group col-md-4">
                 <label for="newName">New user name</label>
-                <input type="text" class="form-control" placeholder="New user name">
+                <input type="text" name="newName" class="form-control" placeholder="New user name">
               </div>
             </div>
             <div class="row justify-content-center mt-5">
               <div class="from-group col-md-4">
+                <fieldset disabled>
                 <label for="password">Password</label>
-                <input type="password" class="form-control disabled" placeholder="Password">
+                <input type="password" name="password" class="form-control disabled" placeholder="Password">
+                </fieldset>
               </div>
               <div class="form-group col-md-4">
                <label for="newPassword">New password</label>
-               <input type="password" class="form-control" placeholder="New password">
+               <input type="password" name="newPassword" class="form-control" placeholder="New password">
               </div>
             </div>
             <div class="row mt-5 justify-content-center">
                 <div class="d-grid col-sm-4">
-                    <a class="btn btn-primary" href="{{url_for('users.user_profile')}}">Save</a>
+                    <input type="submit" class="btn btn-primary" href="{{url_for('users.user_profile')}}" value="Save">
                 </div>
             </div>
         </div>
-
+      </form>
 {% endblock %}

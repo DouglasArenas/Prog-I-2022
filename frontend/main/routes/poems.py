@@ -9,7 +9,6 @@ poems = Blueprint('poems', __name__, url_prefix='/')
 def my_poems():
     jwt = request.cookies.get('access_token')
     if jwt:
-        user_id = request.cookies.get('id')
         api_url = f'{current_app.config["API_URL"]}/poems'
         data = {"page":1,"per_page":10}
         headers = {"Content-Type":"application/json", "Authorization" : f"Bearer {jwt}"}
