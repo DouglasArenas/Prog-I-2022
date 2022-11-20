@@ -52,6 +52,6 @@ class Qualifications(Resource):
                 db.session.commit()
                 return qualification.to_json(), 201
             else:
-                return "Only poets can create poems"
+                return "Only users can comment"
         else:
             return "you must be a registered user"
