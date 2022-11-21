@@ -29,17 +29,18 @@
                 <div class="row">
                     <div class="col-md-15 mx-2">
                       {% if request.cookies.get('access_token') %}
-                        <!-- <form>
-                          <input class="btn-primary rounded" type="button" value="Back" onclick="history.back()">
-                        </form>                       -->
                         <a class="btn btn-primary" href="{{url_for('users.user_profile')}}">Me</a>
 						            <a class="btn btn-danger" href="{{url_for('app.logout')}}">Logout</a>
                         {% else %}
                           {% if request.endpoint == 'app.register' %}
                             <a class="btn btn-primary" href="{{url_for('app.login')}}">Login</a>
-                          {% else %}
+                          {% elif request.endpoint == 'app.login' %}
                             <a class="btn btn-primary" href="{{url_for('app.register')}}">Register</a>
+                          {% elif not request.cookies.get('access_token') %}
+                          <a class="btn btn-primary" href="{{url_for('app.register')}}">Register</a>
+                            <a class="btn btn-success" href="{{url_for('app.login')}}">Login</a>
                           {% endif %}
+                          
                       {% endif %}
                     </div>
                 </div>

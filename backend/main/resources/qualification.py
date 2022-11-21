@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask import request, jsonify
 from .. import db
-from main.models import QualificationModel
+from main.models import QualificationModel, PoemModel, UserModel
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 class Qualification(Resource):
@@ -39,9 +39,27 @@ class Qualification(Resource):
 
 class Qualifications(Resource):
     def get(self):
+        if request.get_json():
+            filters = request.get_json().items()
+            for key, value in filters:
+                if key == "poem_id":
+                    return self.show_marks_by_poem_id(value)
+                if key == "user_id":
+                    return self.show_marks_by_user_id(value)
+
         qualifications = db.session.query(QualificationModel).all()
         return jsonify([qualification.to_json() for qualification in qualifications])
-    
+
+    def show_marks_by_poem_id(self, id):
+        qualifications = db.session.query(QualificationModel)
+        qualifications = qualifications.filter(QualificationModel.poem.has(PoemModel.id == id)).all()
+        return jsonify([qualification.to_json() for qualification in qualifications])
+
+    def show_marks_by_user_id(self, id):
+        qualifications = db.session.query(QualificationModel)
+        qualifications = qualifications.filter(QualificationModel.user.has(UserModel.id == id)).all()
+        return jsonify([qualification.to_json() for qualification in qualifications])
+
     @jwt_required()
     def post(self):
         qualification = QualificationModel.from_json(request.get_json())

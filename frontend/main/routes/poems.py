@@ -17,16 +17,23 @@ def my_poems():
         return render_template('user_poems.html', poems=poems["poems"])
     else:
         return redirect(url_for('app.login'))
-
+        
 @poems.route('/view/poem/<int:id>', methods=['GET'])
 def view_poem(id):
+    jwt = request.cookies.get('access_token')
     user_id = request.cookies.get("id")
     api_url = f'{current_app.config["API_URL"]}/poem/{id}'
     headers = {"Content-Type" : "application/json"}
     response = requests.get(api_url, headers=headers)
     poem = json.loads(response.text)
+    api_url_quali = f'{current_app.config["API_URL"]}/qualifications'
+    data_quali = {"poem_id" : id}
+    headers_quali = {"Content-Type":"application/json", "Authorization" : f"Bearer {jwt}"}
+    response = requests.get(api_url_quali, json=data_quali, headers=headers_quali)
+    qualifications = json.loads(response.text)
     print("ESTE ES EL POEMA",poem)
-    return render_template('poem_view.html', poem=poem, user_id=user_id)
+    print("ESTAS SON LAS CALIFICACIONES",qualifications)
+    return render_template('poem_view.html', poem=poem, user_id=int(user_id), qualifications=qualifications)
 
 @poems.route('/poem/create', methods=['GET','POST'])
 def create_poem():

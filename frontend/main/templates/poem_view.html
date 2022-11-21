@@ -13,11 +13,23 @@
       Author<cite title="Source Title">{{poem.author.name}}</cite>
     </figcaption>
   </figure>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <tbody>
+          <h4>Comments</h4>
+          {% for qualification in qualifications %}
+            <h5>{{qualification.comment}}</h5> 
+              <p>Score: {{qualification.score}}</p>
+          {% endfor %}
+        </tbody>
+      </div>
+    </div>
+  </div>
   {% if request.cookies.get('access_token') %}
   <div class="container">
     <div class="row mt-3 justify-content-center">
       <div class="col-sm-3 mt-3">
-        <h1>HOLA poem user id:{{poem.author.id}} user id:{{user_id}}</h1>
         {% if user_id == poem.author.id %}
         <a class="btn btn-primary" href="{{url_for('poems.modify_poem', id=poem.id)}}">Modify poem</a>
         <a class="btn btn-danger" href="{{url_for('poems.delete_poem', id=poem.id)}}">Delete poem</a>
