@@ -29,12 +29,14 @@
 
         <div class="container">
           <div class="row mt-3 justify-content-center">
-            <div class="col-sm-3 mt-3">
+            <div class="col-sm-4 mt-3">
               <a class="btn btn-primary" href="{{url_for('poems.my_poems')}}">My poems</a>
               <a class="btn btn-success" href="{{url_for('poems.create_poem')}}">Create new poem</a>
-              <a class="btn btn-warning" href="{{url_for('users.modify_user')}}">Modify account</a>
-              <a class="btn btn-danger" href="{{url_for('users.delete_user')}}">Delete account</a>
             </div>
+              <div class="col-sm-4 mt-3">
+                <a class="btn btn-warning" href="{{url_for('users.modify_user')}}">Modify account</a>
+                <a class="btn btn-danger" href="{{url_for('users.delete_user')}}">Delete account</a>
+              </div>
           </div>
         </div>
 
